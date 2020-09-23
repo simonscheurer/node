@@ -27,17 +27,16 @@ class Server {
                     break;
                 }
             }
-
-            this.defaultHandler(response);
+            this.sendNotFoundIfNotHandled(response, requestUrl.path);
         });
         
         this.server.listen(this.port, this.host, 
             () => console.log(`Server listening on http://${this.host}:${this.port}`));
     }
 
-    defaultHandler(response) {
+    sendNotFoundIfNotHandled(response, path) {
         if (!response.writableEnded) {
-            console.log('No handler registered, aborting request');
+            console.log(`Error handling ${path}`);
             response.writeHeader(404, { 'Content-Type': 'text/html'});
             response.end();
         }
