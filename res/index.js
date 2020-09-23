@@ -113,7 +113,7 @@ class ListController {
         const item = await state.detailModel.getDetail(id);
         console.log(item);
         state.detailView.renderDetail(item);
-
+        window.scrollTo(0, 0);
     }
 
     async showList() {
