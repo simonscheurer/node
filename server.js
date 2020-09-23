@@ -18,12 +18,12 @@ class Server {
         this.stop();
 
         this.server = http.createServer((request, response) => {
-            const requestUrl = url.parse(request.url);
+            const requestUrl = url.parse(request.url, true);
             console.log(`Request for ${requestUrl.href}.`);
 
             for (const handler of this.handlers) {
                 if (handler.match(requestUrl)) {
-                    handler.handle(request, response);
+                    handler.handle(requestUrl, request, response);
                     break;
                 }
             }
@@ -38,7 +38,7 @@ class Server {
     defaultHandler(response) {
         if (!response.writableEnded) {
             console.log('No handler registered, aborting request');
-            response.writeHeader(400, { 'Content-Type': 'text/html'});
+            response.writeHeader(404, { 'Content-Type': 'text/html'});
             response.end();
         }
     }
